@@ -4,48 +4,47 @@ import (
 	"io"
 	"os"
 
-	. "github.com/rafaribe/planetwatch-awair-uploader/internal/logger"
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v2"
+
+	. "github.com/rafaribe/planetwatch-awair-uploader/internal/logger"
 )
 
 type Config struct {
-	Inputs  Inputs  `yaml:"inputs"`
-	Outputs Outputs `yaml:"outputs"`
-	Store   Store   `yaml:"store"`
+	Sensors []sensor `yaml:"sensors"`
+	Store   store    `yaml:"store"`
 }
-type Inputs struct {
-	LocalAwair []string `yaml:"localAwair"`
+type sensor struct {
+	Model    string `yaml:"model"`
+	Name     string `yaml:"name"`
+	Endpoint string `yaml:"endpoint"`
 }
-type PlanetWatch struct {
-	Endpoint     string `yaml:"endpoint"`
-	AccessToken  string `yaml:"access_token"`
-	RefreshToken string `yaml:"refresh_token"`
+type store struct {
+	Type     string   `yaml:"type"`
+	postgres postgres `yaml:"postgres"`
 }
-type Outputs struct {
-	PlanetWatch PlanetWatch `yaml:"planetWatch"`
+type postgres struct {
+	ConnectionString string `yaml:"connection_string"`
 }
-type Firebase struct {
-	SecureCredentialsFile string `yaml:"secureCredentialsFile"`
-}
-type Store struct {
-	Firebase Firebase `yaml:"firebase"`
+type influxdb struct {
+	host  string `yaml:"host"`
+	token string `yaml:"token"`
 }
 
-func OpenAndReadFile(fileName string) (*Config, error) {
+func openAndReadFile(fileName string) (*Config, error) {
 	log := zap.S()
 	file, err := os.Open(fileName)
 	if err != nil {
 		log.Errorf("Failed to open file: %s", fileName)
 	}
-	cfg, err := UnmarshalConfig(file)
+	cfg, err := unmarshalConfig(file)
 	if err != nil {
 		log.Errorf("Failed to read file: %s", fileName)
 	}
 	return cfg, nil
 }
 
-func UnmarshalConfig(reader io.Reader) (*Config, error) {
+func unmarshalConfig(reader io.Reader) (*Config, error) {
 	log := zap.S()
 	cfg := &Config{}
 	yd := yaml.NewDecoder(reader)
@@ -66,14 +65,14 @@ func ParseConfiguration() *Config {
 	zap.ReplaceGlobals(logger)
 	defer logger.Sync()
 	log := zap.S()
-	configFilePath := os.Getenv("CONFIG_FILE")
+	configFilePath := os.Getenv("CONFIG_PATH")
 	if configFilePath == "" {
 		configFilePath = "~/.config.yaml"
 		log.Infof("Loaded config at default location %s", configFilePath)
 	} else {
 		log.Infof("Loaded configuration file from non-default location %s", configFilePath)
 	}
-	cfg, err := OpenAndReadFile(configFilePath)
+	cfg, err := openAndReadFile(configFilePath)
 	if err != nil {
 		log.Errorw("Error parsing configuration file %s", err)
 	}

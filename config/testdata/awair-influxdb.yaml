@@ -1,0 +1,10 @@
+---
+sensors:
+  - model: awair
+    name: "sala"
+    endpoint:  "10.0.1.20"
+store:
+  type: "postgres"
+  influx: 
+    host: "http://localhost:8086"
+    token: "rECzw49yQhnMPMd0jOUXsZaEa3QAJow5uyMs7NIUeUc4y1ud1rwGZJTJYNPqaNMwNh8d1NgLpcITheQMuhrcBg=="
