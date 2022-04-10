@@ -12,10 +12,10 @@ func TestOpenAndReadFile(t *testing.T) {
 		want       *Config
 	}{
 		"name": {input_file: "testdata/awair-postgres.yaml", want: &Config{
-			Sensors: []sensor{{Name: "Sala", Model: "awair_element", Endpoint: "10.0.1.20"}},
-			Store: store{
+			Sensors: []Sensor{{Name: "Sala", Model: "awair_element", Endpoint: "10.0.1.20"}},
+			Store: Store{
 				Type:     "postgres",
-				Postgres: &postgres{ConnectionString: "host=localhost port=5432 user=postgres password=postgres dbname=postgres sslmode=disable"},
+				Postgres: &Postgres{ConnectionString: "host=localhost port=5432 user=postgres password=postgres dbname=postgres sslmode=disable"},
 			},
 		}},
 	}
@@ -24,7 +24,7 @@ func TestOpenAndReadFile(t *testing.T) {
 			got, _ := openAndReadFile(tc.input_file)
 			diff := cmp.Diff(tc.want, got)
 			if diff != "" {
-				//t.Fatalf(diff)
+				t.Fatalf(diff)
 			}
 		})
 	}

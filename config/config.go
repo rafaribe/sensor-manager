@@ -11,10 +11,10 @@ import (
 )
 
 type Config struct {
-	Sensors []sensor `yaml:"sensors"`
-	Store   store    `yaml:"store"`
+	Sensors []Sensor `yaml:"sensors"`
+	Store   Store    `yaml:"store"`
 }
-type sensor struct {
+type Sensor struct {
 	Model    string `yaml:"model"`
 	Name     string `yaml:"name"`
 	Endpoint string `yaml:"endpoint"`
@@ -22,15 +22,15 @@ type sensor struct {
 
 // Type of store must be a pointer because it is optional
 // https://github.com/go-yaml/yaml/issues/505#issuecomment-538453157
-type store struct {
+type Store struct {
 	Type     string    `yaml:"type"`
-	Postgres *postgres `yaml:"postgres,omitempty"`
-	InfluxDb *influxdb `yaml:"influxdb,omitempty"`
+	Postgres *Postgres `yaml:"postgres,omitempty"`
+	InfluxDb *Influxdb `yaml:"influxdb,omitempty"`
 }
-type postgres struct {
+type Postgres struct {
 	ConnectionString string `yaml:"connection_string"`
 }
-type influxdb struct {
+type Influxdb struct {
 	host  string `yaml:"host"`
 	token string `yaml:"token"`
 }
