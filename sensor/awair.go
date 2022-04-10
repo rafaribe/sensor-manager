@@ -38,5 +38,8 @@ type AwairElementSettings struct {
 }
 
 type AwairElementSensor struct {
-	
+	Init          func() *AwairElementSensor
+	GetSettings   func() (AwairElementSettings, error)
+	GetTelemetry  func() (AwairElementTelemetry, error)
+	SaveTelemetry func() error
 }
