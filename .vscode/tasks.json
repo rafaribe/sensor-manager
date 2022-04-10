@@ -7,7 +7,7 @@
             "type": "shell",
             "label": "influx",
             "command": [
-                "docker run -d -p 8086:8086 -v $PWD/ignorable/influx/data:/root/influxdb/data -v $PWD/ignorable/influx/lib:/var/lib/influxdb2 -v $PWD/ignorable/influx/influxdb2-config:/etc/influxdb2 -v $PWD/ignorable/influx/influxdb.conf:/root/influxdb/influxdb.conf -e DOCKER_INFLUXDB_INIT_USERNAME='admin' -e DOCKER_INFLUXDB_INIT_PASSWORD='supersecretpassword' -e DOCKER_INFLUXDB_INIT_ORG='test' -e DOCKER_INFLUXDB_INIT_BUCKET='bucket' influxdb:2.2-alpine"
+                "docker run -d -p 8086:8086 -v $PWD/../ignorable/influx/data:/root/influxdb/data -v $PWD/../ignorable/influx/lib:/var/lib/influxdb2 -v $PWD/../ignorable/influx/influxdb2-config:/etc/influxdb2 -v $PWD/../ignorable/influx/influxdb.conf:/root/influxdb/influxdb.conf -e DOCKER_INFLUXDB_INIT_USERNAME='admin' -e DOCKER_INFLUXDB_INIT_PASSWORD='supersecretpassword' -e DOCKER_INFLUXDB_INIT_ORG='test' -e DOCKER_INFLUXDB_INIT_BUCKET='bucket' influxdb:2.2-alpine"
             ],
             "problemMatcher": []
         },
@@ -15,7 +15,7 @@
             "type": "shell",
             "label": "postgres",
             "command": [
-                "docker run -d -e POSTGRES_PASSWORD=mysecretpassword -e PGDATA=/var/lib/postgresql/data/pgdata -v$PWD/ignorable/postgres/:/var/lib/postgresql/data postgres:14.2-alpine"
+                "docker run -d -e POSTGRES_PASSWORD=mysecretpassword -e PGDATA=/var/lib/postgresql/data/pgdata -v$PWD/../ignorable/postgres/:/var/lib/postgresql/data postgres:14.2-alpine"
             ],
             "problemMatcher": []
         }

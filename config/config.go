@@ -19,9 +19,13 @@ type sensor struct {
 	Name     string `yaml:"name"`
 	Endpoint string `yaml:"endpoint"`
 }
+
+// Type of store must be a pointer because it is optional
+// https://github.com/go-yaml/yaml/issues/505#issuecomment-538453157
 type store struct {
-	Type     string   `yaml:"type"`
-	postgres postgres `yaml:"postgres"`
+	Type     string    `yaml:"type"`
+	Postgres *postgres `yaml:"postgres,omitempty"`
+	InfluxDb *influxdb `yaml:"influxdb,omitempty"`
 }
 type postgres struct {
 	ConnectionString string `yaml:"connection_string"`
