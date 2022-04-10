@@ -4,6 +4,10 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"io"
+	"io/ioutil"
+	"log"
+	"os"
 	"runtime"
 	"testing"
 	"unsafe"
@@ -22,4 +26,12 @@ func GetT() *testing.T {
 		return (*testing.T)(unsafe.Pointer(p))
 	}
 	return nil
+}
+func Fixture(path string) io.Reader {
+	log.Println(os.Getwd())
+	b, err := ioutil.ReadFile("testdata/" + path)
+	if err != nil {
+		panic(err)
+	}
+	return bytes.NewReader(b)
 }

@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/rafaribe/planetwatch-awair-uploader/config"
 	"go.uber.org/zap"
+
+	"github.com/rafaribe/sensor-manager/config"
 )
 
 func main() {

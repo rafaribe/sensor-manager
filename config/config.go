@@ -7,7 +7,7 @@ import (
 	"go.uber.org/zap"
 	"gopkg.in/yaml.v2"
 
-	. "github.com/rafaribe/planetwatch-awair-uploader/internal/logger"
+	. "github.com/rafaribe/sensor-manager/internal/logger"
 )
 
 type Config struct {

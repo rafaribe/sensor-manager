@@ -1,11 +1,6 @@
 package config
 
 import (
-	"bytes"
-	"io"
-	"io/ioutil"
-	"log"
-	"os"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -33,12 +28,4 @@ func TestOpenAndReadFile(t *testing.T) {
 			}
 		})
 	}
-}
-func fixture(path string) io.Reader {
-	log.Println(os.Getwd())
-	b, err := ioutil.ReadFile("testdata/" + path)
-	if err != nil {
-		panic(err)
-	}
-	return bytes.NewReader(b)
 }
