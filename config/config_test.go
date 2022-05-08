@@ -12,7 +12,7 @@ func TestOpenAndReadFile(t *testing.T) {
 		want       *Config
 	}{
 		"name": {input_file: "testdata/awair-postgres.yaml", want: &Config{
-			Sensors: []Sensor{{Name: "Sala", Model: "awair_element", Endpoint: "10.0.1.20"}},
+			Sensors: []SensorConfig{{Name: "sala", Model: "awair_element", Endpoint: "10.0.1.20"}},
 			Store: Store{
 				Type:     "postgres",
 				Postgres: &Postgres{ConnectionString: "host=localhost port=5432 user=postgres password=postgres dbname=postgres sslmode=disable"},

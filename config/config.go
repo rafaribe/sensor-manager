@@ -11,10 +11,10 @@ import (
 )
 
 type Config struct {
-	Sensors []Sensor `yaml:"sensors"`
-	Store   Store    `yaml:"store"`
+	Sensors []SensorConfig `yaml:"sensors"`
+	Store   Store          `yaml:"store"`
 }
-type Sensor struct {
+type SensorConfig struct {
 	Model    string `yaml:"model"`
 	Name     string `yaml:"name"`
 	Endpoint string `yaml:"endpoint"`

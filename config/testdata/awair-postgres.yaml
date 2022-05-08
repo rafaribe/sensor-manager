@@ -1,6 +1,6 @@
 ---
 sensors:
-  - model: awair
+  - model: awair_element
     name: "sala"
     endpoint:  "10.0.1.20"
 store:

@@ -1,5 +1,13 @@
 package sensor
 
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+
+	. "github.com/rafaribe/sensor-manager/config"
+)
+
 // Awair element payload
 type AwairElementTelemetry struct {
 	Timestamp      string  `json:"timestamp"`
@@ -36,10 +44,49 @@ type AwairElementSettings struct {
 	} `json:"led"`
 	VocFeatureSet int `json:"voc_feature_set"`
 }
+type Sensor interface {
+	Init(c *SensorConfig) any
+	GetSettings() (any, error)
+	GetTelemetry() (any, error)
+	SaveTelemetry() error
+}
 
 type AwairElementSensor struct {
-	Init          func() *AwairElementSensor
-	GetSettings   func() (AwairElementSettings, error)
-	GetTelemetry  func() (AwairElementTelemetry, error)
-	SaveTelemetry func() error
+	host              string
+	settingsEndpoint  string
+	telemetryEndpoint string
+}
+
+func Init(c *SensorConfig) *AwairElementSensor {
+	sensor := &AwairElementSensor{
+		host:              c.Endpoint,
+		settingsEndpoint:  "settings/config/data",
+		telemetryEndpoint: "air-data/latest",
+	}
+	return sensor
+}
+func (s *AwairElementSensor) GetSettings() (*AwairElementSettings, error) {
+	res, err := http.Get(fmt.Sprintf("http://%s/%s", s.host, s.settingsEndpoint))
+	if err != nil {
+		return nil, err
+	}
+	set := new(AwairElementSettings)
+	if err := json.NewDecoder(res.Body).Decode(set); err != nil {
+		return nil, err
+	}
+	return set, nil
+}
+func (s AwairElementSensor) GetTelemetry() (*AwairElementTelemetry, error) {
+	res, err := http.Get(fmt.Sprintf("http://%s/%s", s.host, s.telemetryEndpoint))
+	if err != nil {
+		return nil, err
+	}
+	telemetry := new(AwairElementTelemetry)
+	if err := json.NewDecoder(res.Body).Decode(telemetry); err != nil {
+		return nil, err
+	}
+	return telemetry, nil
+}
+func (s AwairElementSensor) SaveTelemetry() error {
+	return nil
 }
