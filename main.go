@@ -1,6 +1,8 @@
 package main
 
 import (
+	"sync"
+
 	"go.uber.org/zap"
 
 	"github.com/rafaribe/sensor-manager/config"
@@ -11,16 +13,18 @@ func main() {
 	conf := config.ParseConfiguration()
 	log := zap.S()
 	log.Info("Configuration successfully parsed %#v", conf)
+	var wg sync.WaitGroup
 	for _, sensorConfig := range conf.Sensors {
+		wg.Add(2)
 		log.Info("Sensor %#v", sensorConfig)
 		if sensorConfig.Model == "awair_element" {
-			sensor := sensor.Init(&sensorConfig)
-			settings, err := sensor.GetSettings()
-			if err != nil {
-				log.Error("Error getting settings for sensor %#v", sensorConfig)
-			}
-			log.Debugw("Sensor Settings %#v", settings)
+			awair := sensor.Init(&sensorConfig)
+			go func() {
+				defer wg.Done()
+				go sensor.SettingsRoutine(awair, conf.ScrapeInterval*5)
+				go sensor.TelemetryRoutine(awair, conf.ScrapeInterval)
+			}()
 		}
-
 	}
+	wg.Wait()
 }

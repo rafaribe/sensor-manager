@@ -6,3 +6,4 @@ sensors:
 store:
   type: "influx" # Intentionally wrong 
   connection_string: "postgresql://postgres:1234@localhost:5432/postgres"
+scrape_nterval: 30

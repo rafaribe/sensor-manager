@@ -44,12 +44,6 @@ type AwairElementSettings struct {
 	} `json:"led"`
 	VocFeatureSet int `json:"voc_feature_set"`
 }
-type Sensor interface {
-	Init(c *SensorConfig) any
-	GetSettings() (any, error)
-	GetTelemetry() (any, error)
-	SaveTelemetry() error
-}
 
 type AwairElementSensor struct {
 	host              string
@@ -87,6 +81,10 @@ func (s AwairElementSensor) GetTelemetry() (*AwairElementTelemetry, error) {
 	}
 	return telemetry, nil
 }
-func (s AwairElementSensor) SaveTelemetry() error {
+func (s AwairElementSensor) SaveTelemetry(*AwairElementTelemetry) error {
+	return nil
+}
+func (s AwairElementSensor) SaveSettings(*AwairElementSettings) error {
+
 	return nil
 }

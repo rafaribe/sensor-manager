@@ -11,8 +11,9 @@ import (
 )
 
 type Config struct {
-	Sensors []SensorConfig `yaml:"sensors"`
-	Store   Store          `yaml:"store"`
+	Sensors        []SensorConfig `yaml:"sensors"`
+	Store          Store          `yaml:"store"`
+	ScrapeInterval int32          `yaml:"scrape_interval"`
 }
 type SensorConfig struct {
 	Model    string `yaml:"model"`

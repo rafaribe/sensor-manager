@@ -8,3 +8,4 @@ store:
   influx: 
     host: "http://localhost:8086"
     token: "rECzw49yQhnMPMd0jOUXsZaEa3QAJow5uyMs7NIUeUc4y1ud1rwGZJTJYNPqaNMwNh8d1NgLpcITheQMuhrcBg=="
+scrape_interval: 5
