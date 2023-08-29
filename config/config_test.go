@@ -15,7 +15,7 @@ func TestOpenAndReadFile(t *testing.T) {
 			Sensors: []SensorConfig{{Name: "sala", Model: "awair_element", Endpoint: "10.0.1.20"}},
 			Store: Store{
 				Type:     "postgres",
-				Postgres: &Postgres{ConnectionString: "host=localhost port=5432 user=postgres password=postgres dbname=postgres sslmode=disable"},
+				InfluxDb: &Influxdb{Host: "localhost:8086", Token: "8vq-gjtKAPfrXCwaLPN3EeabGjUUCZFTKjumX7t1IkiNtGq_d6I-XqY6wm4iozMVM5qBgCbbK0UQNFyQJBYFDw==", Org: "admin", Bucket: "sensor"},
 			},
 		}},
 	}

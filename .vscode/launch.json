@@ -6,7 +6,7 @@
             "type": "go",
             "request": "launch",
             "mode": "debug",
-            "program": "main.go",
+            "program": "${workspaceFolder}/main.go",
             "env": {
                 "CONFIG_PATH": "${workspaceFolder}/config/testdata/awair-influxdb.yaml"
             },

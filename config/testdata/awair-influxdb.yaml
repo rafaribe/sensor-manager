@@ -2,10 +2,12 @@
 sensors:
   - model: awair_element
     name: "sala"
-    endpoint:  "10.0.1.27"
+    endpoint:  "10.0.1.26"
 store:
-  type: "postgres"
-  influx: 
-    host: "http://localhost:8086"
-    token: "rECzw49yQhnMPMd0jOUXsZaEa3QAJow5uyMs7NIUeUc4y1ud1rwGZJTJYNPqaNMwNh8d1NgLpcITheQMuhrcBg=="
-scrape_interval: 5
+  type: "influx"
+  influxdb: 
+    host: "http://10.0.1.68:8086"
+    token: "QCOPbmULflsjqBgMjDFJymOEX4LItdxCPzcj03BjQBVyeA2t9Y5SoIf4NCMMWc59u9QLyTCD7uK9s5tUv6U_bw=="
+    org: admin
+    bucket: sensors
+scrape_interval: 30

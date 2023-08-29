@@ -12,13 +12,13 @@ import (
 func main() {
 	conf := config.ParseConfiguration()
 	log := zap.S()
-	log.Info("Configuration successfully parsed %#v", conf)
+	log.Infof("Configuration successfully parsed %#v", conf)
 	var wg sync.WaitGroup
 	for _, sensorConfig := range conf.Sensors {
 		wg.Add(2)
 		log.Info("Sensor %#v", sensorConfig)
 		if sensorConfig.Model == "awair_element" {
-			awair := sensor.Init(&sensorConfig)
+			awair := sensor.Init(&sensorConfig, &conf.Store)
 			go func() {
 				defer wg.Done()
 				go sensor.SettingsRoutine(awair, conf.ScrapeInterval*5)

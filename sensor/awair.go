@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	influxdb2 "github.com/influxdata/influxdb-client-go/v2"
 	. "github.com/rafaribe/sensor-manager/config"
 )
 
@@ -49,13 +50,19 @@ type AwairElementSensor struct {
 	host              string
 	settingsEndpoint  string
 	telemetryEndpoint string
+	storageClient     influxdb2.Client
+	bucket            string
+	org               string
 }
 
-func Init(c *SensorConfig) *AwairElementSensor {
+func Init(c *SensorConfig, s *Store) *AwairElementSensor {
 	sensor := &AwairElementSensor{
 		host:              c.Endpoint,
 		settingsEndpoint:  "settings/config/data",
 		telemetryEndpoint: "air-data/latest",
+		storageClient:     influxdb2.NewClient(s.InfluxDb.Host, s.InfluxDb.Token),
+		bucket:            s.InfluxDb.Bucket,
+		org:               s.InfluxDb.Org,
 	}
 	return sensor
 }
@@ -81,10 +88,47 @@ func (s AwairElementSensor) GetTelemetry() (*AwairElementTelemetry, error) {
 	}
 	return telemetry, nil
 }
-func (s AwairElementSensor) SaveTelemetry(*AwairElementTelemetry) error {
-	return nil
-}
-func (s AwairElementSensor) SaveSettings(*AwairElementSettings) error {
+func (s AwairElementSensor) SaveTelemetry(telemetry *AwairElementTelemetry) {
+	writeAPI := s.storageClient.WriteAPI(s.org, s.bucket)
+	defer writeAPI.Flush()
 
-	return nil
+	point := influxdb2.NewPointWithMeasurement("awair_telemetry").
+		AddField("score", telemetry.Score).
+		AddField("dew_point", telemetry.DewPoint).
+		AddField("temp", telemetry.Temp).
+		AddField("humid", telemetry.Humid).
+		AddField("abs_humid", telemetry.AbsHumid).
+		AddField("co2", telemetry.Co2).
+		AddField("co2_est", telemetry.Co2Est).
+		AddField("co2_est_baseline", telemetry.Co2EstBaseline).
+		AddField("voc", telemetry.Voc).
+		AddField("voc_baseline", telemetry.VocBaseline).
+		AddField("voc_h2_raw", telemetry.VocH2Raw).
+		AddField("voc_ethanol_raw", telemetry.VocEthanolRaw).
+		AddField("pm25", telemetry.Pm25).
+		AddField("pm10_est", telemetry.Pm10Est)
+
+	// Write the point to the database
+	writeAPI.WritePoint(point)
+}
+func (s AwairElementSensor) SaveSettings(settings *AwairElementSettings) {
+
+	writeAPI := s.storageClient.WriteAPI(s.org, s.bucket)
+	defer writeAPI.Flush()
+
+	point := influxdb2.NewPointWithMeasurement("awair_settings").
+		AddTag("device_uuid", settings.DeviceUUID).
+		AddTag("wifi_mac", settings.WifiMac).
+		AddField("ssid", settings.Ssid).
+		AddField("ip", settings.IP).
+		AddField("netmask", settings.Netmask).
+		AddField("gateway", settings.Gateway).
+		AddField("fw_version", settings.FwVersion).
+		AddField("timezone", settings.Timezone).
+		AddField("display", settings.Display).
+		AddField("led_mode", settings.Led.Mode).
+		AddField("led_brightness", settings.Led.Brightness).
+		AddField("voc_feature_set", settings.VocFeatureSet)
+
+	writeAPI.WritePoint(point)
 }

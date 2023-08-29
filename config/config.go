@@ -25,15 +25,16 @@ type SensorConfig struct {
 // https://github.com/go-yaml/yaml/issues/505#issuecomment-538453157
 type Store struct {
 	Type     string    `yaml:"type"`
-	Postgres *Postgres `yaml:"postgres,omitempty"`
 	InfluxDb *Influxdb `yaml:"influxdb,omitempty"`
 }
 type Postgres struct {
 	ConnectionString string `yaml:"connection_string"`
 }
 type Influxdb struct {
-	host  string `yaml:"host"`
-	token string `yaml:"token"`
+	Host   string `yaml:"host"`
+	Token  string `yaml:"token"`
+	Org    string `yaml:"org"`
+	Bucket string `yaml:"bucket"`
 }
 
 func openAndReadFile(fileName string) (*Config, error) {
