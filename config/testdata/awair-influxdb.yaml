@@ -10,4 +10,4 @@ store:
     token: "QCOPbmULflsjqBgMjDFJymOEX4LItdxCPzcj03BjQBVyeA2t9Y5SoIf4NCMMWc59u9QLyTCD7uK9s5tUv6U_bw=="
     org: admin
     bucket: sensors
-scrape_interval: 30
+scrape_interval: 60
