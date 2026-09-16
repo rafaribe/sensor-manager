@@ -2,7 +2,10 @@ module github.com/rafaribe/sensor-manager
 
 go 1.18
 
-require gopkg.in/yaml.v2 v2.4.0
+require (
+	gopkg.in/yaml.v2 v2.3.0
+	gopkg.in/yaml.v3 v3.0.1
+)
 
 require (
 	github.com/deepmap/oapi-codegen v1.8.2 // indirect
