@@ -1,13 +1,13 @@
 module github.com/rafaribe/sensor-manager
 
-go 1.18
+go 1.25.0
 
 require gopkg.in/yaml.v2 v2.4.0
 
 require (
 	github.com/deepmap/oapi-codegen v1.8.2 // indirect
 	github.com/influxdata/line-protocol v0.0.0-20200327222509-2487e7298839 // indirect
-	golang.org/x/net v0.7.0 // indirect
+	golang.org/x/net v0.55.0 // indirect
 )
 
 require (
